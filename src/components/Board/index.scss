@@ -1,17 +1,27 @@
 .board {
+  position: relative;
   width: 100%;
   height: 100%;
   flex-grow: 1;
   box-sizing: border-box;
-  background-color: #F5F5F5;
+  background-color: #EDDFEF;
 
   &__head {
+    display: flex;
+    align-items: center;
+    column-gap: 20px;
     padding: 20px 40px;
-    background-color: #bdbebd;
+    background-color: #441151;
   }
 
   &__title {
     margin: 0;
+    color: #fff;
+  }
+
+  &__filter,
+  &__sort {
+    color: #fff;
   }
 
   &__button {
@@ -50,5 +60,18 @@
 
   &__main {
     padding: 30px 40px;
+  }
+}
+
+.overlay-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+
+  &.open {
+    z-index: 10;
   }
 }

@@ -1,7 +1,7 @@
 import './index.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { Item } from '../Item';
-import { addNewItem } from '../../store/boardList';
+import { addNewItem, saveItem } from '../../store/boardList';
 import { nanoid } from '@reduxjs/toolkit';
 import { borderSpace } from '../../store/boardList';
 import { useEffect, useState } from 'react';
@@ -20,9 +20,24 @@ export const Board = () => {
   }, [boardList]);
 
   return (
-    <div className="board" onClick={() => {}}>
+    <div
+      className="board"
+      onClick={(e) => {
+        if (!e.target.closest('li')) {
+          let listItem = document.querySelectorAll('.item');
+          Array.from(listItem).map((item) => {
+            if (item.classList.contains('item--change')) {
+              item.classList.remove('item--change');
+            }
+          });
+        }
+      }}
+    >
+      <div className="overlay-wrapper" onClick={() => {}}></div>
       <div className="board__head">
         <h1 className="board__title">Todo by @lockdur</h1>
+        <div className="board__filter">filter by:</div>
+        <div className="board__sort">sort by:</div>
       </div>
       <div className="board__main">
         <button

@@ -33,9 +33,9 @@ export const boardSlice = createSlice({
         date.getFullYear();
       state.unshift({
         idItem: action.payload,
-        name: 'some name',
+        name: 'Введите название цели',
         date: result,
-        description: 'some info',
+        description: 'Введите описание цели',
       });
     },
     removeItem: (state, action) => {
@@ -53,6 +53,7 @@ export const boardSlice = createSlice({
       let id = action.payload.id;
       let name = action.payload.name;
       let description = action.payload.description;
+      let date = action.payload.date;
       state.map((item, i) => {
         if (item.idItem === id) {
           if (name) {
@@ -61,6 +62,7 @@ export const boardSlice = createSlice({
           if (description) {
             item.description = description;
           }
+          item.date = date;
         }
       });
     },
