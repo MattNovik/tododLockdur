@@ -4,7 +4,7 @@ import { Close } from '@mui/icons-material';
 import { useDispatch } from 'react-redux';
 import { removeItem, changeItem, saveItem } from '../../store/boardList';
 import DatePicker from 'react-datepicker';
-import { useState } from 'react';
+import { useState, forwardRef, useEffect } from 'react';
 
 const month = [
   'янв',
@@ -21,9 +21,26 @@ const month = [
   'дек',
 ];
 
-export const Item = ({ idItem, name, description, date }) => {
+const CustomInput = forwardRef(({ value, onClick }, ref) => (
+  <button className="custom-input" onClick={onClick} ref={ref}>
+    {value}
+  </button>
+));
+
+export const Item = ({ idItem, name, description, date, classDate }) => {
   const dispatch = useDispatch();
+  const [newDate, setNewDate] = useState(date);
   const [picDate, setPicDate] = useState(new Date());
+
+  useEffect(() => {
+    setNewDate(
+      picDate.getDate() +
+        ' ' +
+        month[picDate.getMonth()] +
+        ' ' +
+        picDate.getFullYear()
+    );
+  }, [picDate, date]);
 
   return (
     <li
@@ -40,7 +57,6 @@ export const Item = ({ idItem, name, description, date }) => {
             item.classList.remove('item--change');
           });
           e.target.closest('li').classList.add('item--change');
-          //document.querySelector('.overlay-wrapper').classList.add('open');
           dispatch(changeItem());
         }
       }}
@@ -69,11 +85,14 @@ export const Item = ({ idItem, name, description, date }) => {
       />
       <p className="item__description">{description}</p>
       <div className="item__date-save">
-        <span>{date}</span>
+        <span>{newDate}</span>
         <DatePicker
           selected={picDate}
-          onChange={(date) => setPicDate(date)}
+          onChange={(date) => {
+            setPicDate(date);
+          }}
           className="item__date"
+          customInput={<CustomInput />}
         />
         <button
           className="item__save-button"
@@ -84,18 +103,13 @@ export const Item = ({ idItem, name, description, date }) => {
               description: e.target
                 .closest('li')
                 .querySelector('.item__description-input').value,
-              date:
-                picDate.getDate() +
-                ' ' +
-                month[picDate.getMonth()] +
-                ' ' +
-                picDate.getFullYear(),
+              date: picDate.getTime(),
             };
             dispatch(saveItem(data));
             e.target.closest('li').classList.remove('item--change');
           }}
         >
-          SAVE
+          ОК
         </button>
       </div>
     </li>

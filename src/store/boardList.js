@@ -1,20 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const month = [
-  'янв',
-  'фев',
-  'мар',
-  'апр',
-  'май',
-  'июн',
-  'июл',
-  'авг',
-  'сен',
-  'окт',
-  'ноя',
-  'дек',
-];
-
 const initialState = localStorage.getItem('boardList')
   ? JSON.parse(localStorage.getItem('boardList'))
   : [];
@@ -24,17 +9,11 @@ export const boardSlice = createSlice({
   initialState,
   reducers: {
     addNewItem: (state, action) => {
-      let date = new Date();
-      let result =
-        date.getDate() +
-        ' ' +
-        month[date.getMonth()] +
-        ' ' +
-        date.getFullYear();
+      let date = new Date().getTime();
       state.unshift({
         idItem: action.payload,
         name: 'Введите название цели',
-        date: result,
+        date: date,
         description: 'Введите описание цели',
       });
     },
@@ -53,7 +32,7 @@ export const boardSlice = createSlice({
       let id = action.payload.id;
       let name = action.payload.name;
       let description = action.payload.description;
-      let date = action.payload.date;
+      let date = new Date(action.payload.date).getTime();
       state.map((item, i) => {
         if (item.idItem === id) {
           if (name) {

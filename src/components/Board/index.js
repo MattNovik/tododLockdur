@@ -6,6 +6,21 @@ import { nanoid } from '@reduxjs/toolkit';
 import { borderSpace } from '../../store/boardList';
 import { useEffect, useState } from 'react';
 
+const month = [
+  'янв',
+  'фев',
+  'мар',
+  'апр',
+  'май',
+  'июн',
+  'июл',
+  'авг',
+  'сен',
+  'окт',
+  'ноя',
+  'дек',
+];
+
 export const Board = () => {
   const dispatch = useDispatch();
   const boardList = useSelector(borderSpace);
@@ -45,17 +60,24 @@ export const Board = () => {
           onClick={() => dispatch(addNewItem(nanoid()))}
         >
           {' '}
-          Add new item
+          Добавить новую задачу
         </button>
         <ul className="board__list">
-          {smallBoardList.map((item) => {
+          {smallBoardList.map((item, i) => {
+            const newDate = new Date(item.date);
+            const normalDate =
+              newDate.getDate() +
+              ' ' +
+              month[newDate.getMonth()] +
+              ' ' +
+              newDate.getFullYear();
             return (
               <Item
                 key={nanoid()}
                 idItem={item.idItem}
                 name={item.name}
                 description={item.description}
-                date={item.date}
+                date={normalDate}
               />
             );
           })}
