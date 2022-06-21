@@ -1,8 +1,24 @@
+import { CompressOutlined } from '@mui/icons-material';
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = localStorage.getItem('boardList')
   ? JSON.parse(localStorage.getItem('boardList'))
   : [];
+
+const month = [
+  'янв',
+  'фев',
+  'мар',
+  'апр',
+  'май',
+  'июн',
+  'июл',
+  'авг',
+  'сен',
+  'окт',
+  'ноя',
+  'дек',
+];
 
 export const boardSlice = createSlice({
   name: 'board',
@@ -27,12 +43,18 @@ export const boardSlice = createSlice({
         });
       }
     },
+    sortItemsUp: (state, action) => {
+      state.sort((a, b) => a.date - b.date);
+    },
+    sortItemsDown: (state, action) => {
+      state.sort((a, b) => b.date - a.date);
+    },
     changeItem: (state, action) => {},
     saveItem: (state, action) => {
       let id = action.payload.id;
       let name = action.payload.name;
       let description = action.payload.description;
-      let date = new Date(action.payload.date).getTime();
+      let date = action.payload.date;
       state.map((item, i) => {
         if (item.idItem === id) {
           if (name) {
@@ -50,7 +72,13 @@ export const boardSlice = createSlice({
 
 export const borderSpace = (state) => state.board;
 
-export const { addNewItem, removeItem, changeItem, saveItem } =
-  boardSlice.actions;
+export const {
+  addNewItem,
+  removeItem,
+  changeItem,
+  saveItem,
+  sortItemsUp,
+  sortItemsDown,
+} = boardSlice.actions;
 
 export default boardSlice.reducer;

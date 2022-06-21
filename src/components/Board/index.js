@@ -1,33 +1,35 @@
 import './index.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { Item } from '../Item';
-import { addNewItem, saveItem } from '../../store/boardList';
+import { addNewItem, sortItemsUp, sortItemsDown } from '../../store/boardList';
 import { nanoid } from '@reduxjs/toolkit';
 import { borderSpace } from '../../store/boardList';
 import { useEffect, useState } from 'react';
-
-const month = [
-  'янв',
-  'фев',
-  'мар',
-  'апр',
-  'май',
-  'июн',
-  'июл',
-  'авг',
-  'сен',
-  'окт',
-  'ноя',
-  'дек',
-];
+import DatePicker from 'react-datepicker';
 
 export const Board = () => {
   const dispatch = useDispatch();
-  const boardList = useSelector(borderSpace);
+  let boardList = useSelector(borderSpace);
   let MAXLIST = 9;
   const [smallBoardList, setSmallBoardList] = useState(
     boardList.slice(0, MAXLIST)
   );
+
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(null);
+  const onChange = (dates) => {
+    const [start, end] = dates;
+    setStartDate(start);
+    setEndDate(end);
+    setSmallBoardList(boardList.slice(0, MAXLIST));
+    if (end !== null && start !== null) {
+      setSmallBoardList(
+        smallBoardList.filter(
+          (item) => item.date >= start.getTime() && item.date <= end.getTime()
+        )
+      );
+    }
+  };
 
   useEffect(() => {
     localStorage.setItem('boardList', JSON.stringify(boardList));
@@ -51,8 +53,34 @@ export const Board = () => {
       <div className="overlay-wrapper" onClick={() => {}}></div>
       <div className="board__head">
         <h1 className="board__title">Todo by @lockdur</h1>
-        <div className="board__filter">filter by:</div>
-        <div className="board__sort">sort by:</div>
+        <div className="board__filter">
+          <span>filter by:</span>
+          <DatePicker
+            selected={startDate}
+            onChange={onChange}
+            startDate={startDate}
+            endDate={endDate}
+            selectsRange
+            inline
+          />
+        </div>
+        <div className="board__sort">
+          <span>sort by:</span>
+          <button
+            onClick={() => {
+              dispatch(sortItemsUp());
+            }}
+          >
+            by date Up
+          </button>
+          <button
+            onClick={() => {
+              dispatch(sortItemsDown());
+            }}
+          >
+            by date Down
+          </button>
+        </div>
       </div>
       <div className="board__main">
         <button
@@ -64,20 +92,13 @@ export const Board = () => {
         </button>
         <ul className="board__list">
           {smallBoardList.map((item, i) => {
-            const newDate = new Date(item.date);
-            const normalDate =
-              newDate.getDate() +
-              ' ' +
-              month[newDate.getMonth()] +
-              ' ' +
-              newDate.getFullYear();
             return (
               <Item
                 key={nanoid()}
                 idItem={item.idItem}
                 name={item.name}
                 description={item.description}
-                date={normalDate}
+                date={item.date}
               />
             );
           })}

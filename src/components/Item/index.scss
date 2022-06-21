@@ -1,10 +1,11 @@
 .item {
   display: flex;
   flex-direction: column;
-  row-gap: 20px;
+  justify-content: space-between;
+  row-gap: 10px;
   position: relative;
   width: 300px;
-  min-height: 150px;
+  height: 200px;
   padding: 20px 35px 20px 20px;
   box-sizing: border-box;
   background-color: #fff;
@@ -14,7 +15,7 @@
   transition: all .3s ease;
   backface-visibility: hidden;
 
-  &.item--late {
+  &[data-classdate='true'] {
     &:before {
       background-color: red;
     }
@@ -72,10 +73,21 @@
 
   &__name {
     margin: 0;
+    line-height: 41px;
   }
 
   &__description-input {
     resize: none;
+    max-height: 50px !important;
+    border-radius: 4px;
+    color: rgba(0, 0, 0, 0.87);
+    border-color: rgba(0, 0, 0, 0.23);
+    padding: 8px;
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   &__name-input,
@@ -85,6 +97,20 @@
     display: none !important;
     visibility: hidden;
     opacity: 0;
+  }
+
+  &__description {
+    margin: 0;
+    min-height: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    line-clamp: 2;
+    box-orient: vertical;
   }
 
   &__save-button {
@@ -128,7 +154,7 @@
     }
     
     .item__date-save {
-      span {
+      .item__date-visual {
         display: none;
         visibility: hidden;
         opacity: 0;

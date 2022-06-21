@@ -4,7 +4,7 @@ import { Close } from '@mui/icons-material';
 import { useDispatch } from 'react-redux';
 import { removeItem, changeItem, saveItem } from '../../store/boardList';
 import DatePicker from 'react-datepicker';
-import { useState, forwardRef, useEffect } from 'react';
+import { forwardRef, useState } from 'react';
 
 const month = [
   'янв',
@@ -27,24 +27,22 @@ const CustomInput = forwardRef(({ value, onClick }, ref) => (
   </button>
 ));
 
-export const Item = ({ idItem, name, description, date, classDate }) => {
+export const Item = ({ idItem, name, description, date }) => {
   const dispatch = useDispatch();
-  const [newDate, setNewDate] = useState(date);
-  const [picDate, setPicDate] = useState(new Date());
-
-  useEffect(() => {
-    setNewDate(
-      picDate.getDate() +
-        ' ' +
-        month[picDate.getMonth()] +
-        ' ' +
-        picDate.getFullYear()
-    );
-  }, [picDate, date]);
+  const dateObj = new Date(date);
+  const coverDate =
+    dateObj.getDate() +
+    ' ' +
+    month[dateObj.getMonth()] +
+    ' ' +
+    dateObj.getFullYear();
+  const [pickerDate, setPickerDate] = useState(new Date(date));
+  const [classDate] = useState(new Date().getTime() > date ? true : false);
 
   return (
     <li
       className="item"
+      data-classdate={classDate}
       id={idItem}
       onClick={(e) => {
         if (
@@ -75,6 +73,15 @@ export const Item = ({ idItem, name, description, date, classDate }) => {
         label="Название цели"
         placeholder={name}
         className="item__name-input"
+        sx={{
+          //padding: '5px',
+          '& .MuiInputBase-input': {
+            padding: '8px',
+          },
+          '& .MuiInputLabel-root': {
+            transform: 'translate(14px, 8px) scale(1)',
+          },
+        }}
       />
       <h3 className="item__name">{name}</h3>
       <TextareaAutosize
@@ -85,11 +92,11 @@ export const Item = ({ idItem, name, description, date, classDate }) => {
       />
       <p className="item__description">{description}</p>
       <div className="item__date-save">
-        <span>{newDate}</span>
+        <span className="item__date-visual">{coverDate}</span>
         <DatePicker
-          selected={picDate}
+          selected={pickerDate}
           onChange={(date) => {
-            setPicDate(date);
+            setPickerDate(date.getTime());
           }}
           className="item__date"
           customInput={<CustomInput />}
@@ -103,7 +110,7 @@ export const Item = ({ idItem, name, description, date, classDate }) => {
               description: e.target
                 .closest('li')
                 .querySelector('.item__description-input').value,
-              date: picDate.getTime(),
+              date: pickerDate,
             };
             dispatch(saveItem(data));
             e.target.closest('li').classList.remove('item--change');

@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   width: inherit;
   width: 100%;
@@ -8,6 +12,11 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  overflow-x: hidden;
+  margin-right: calc(-1 * (100vw - 100%));
 }
 
 code {
