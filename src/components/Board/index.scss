@@ -9,7 +9,7 @@
   &__head {
     display: flex;
     align-items: center;
-    column-gap: 20px;
+    column-gap: 40px;
     padding: 20px 40px;
     background-color: #441151;
   }
@@ -17,6 +17,11 @@
   &__title {
     margin: 0;
     color: #fff;
+    text-transform: uppercase;
+  }
+
+  &__filter {
+    position: relative;
   }
 
   &__filter,
@@ -73,5 +78,129 @@
 
   &.open {
     z-index: 10;
+  }
+}
+
+.filter__by-date {
+  display: none;
+}
+
+.wrapper-filters {
+  display: none;
+
+  &--open {
+    display: block;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    transform: translate(50%, 0);
+    z-index: 100;
+  }
+}
+
+.wrapper-sorts {
+  display: none;
+}
+
+.button {
+  min-width: 100px;
+  padding: 8px 16px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  outline: 0;
+  background-color: rgba(255,255,255, .8);
+  color: #000;
+  border: 0;
+  transition: all .3s ease;
+  cursor: pointer;
+  font-weight: 700;
+
+  &:hover {
+    background-color: rgba(255,255,255,1);
+  }
+}
+
+.wrapper-buttons-filters {
+  position: relative;
+
+  &--open {
+    :last-child {
+      border-radius: 0 0 4px 4px;
+    }
+
+    .filter__button-by-date,
+    .filter__button-by-real {
+      display: block;
+    }
+
+    .button {
+      &.filters {
+        border-radius: 4px 4px 0 0;
+      }
+    }
+
+    .filter__button-by-real {
+      top: 200%;
+      border-top: solid 1px #000;
+    }
+  }
+}
+
+.wrapper-buttons-filter--open + .filter__by-date--open {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 100%;
+  transform: translate(0, 0);
+  z-index: 110;
+}
+
+.wrapper-buttons-sorts {
+  position: relative;
+
+  &--open {
+
+    :last-child {
+      border-radius: 0 0 4px 4px;
+    }
+
+    .sort__button-by-up,
+    .sort__button-by-down {
+      display: block;
+    }
+
+    .button {
+      &.sorts {
+        border-radius: 4px 4px 0 0;
+      }
+    }
+
+    .sort__button-by-down {
+      top: 200%;
+      border-top: solid 1px #000;
+    }
+  }  
+}
+
+
+.buttonFS {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  z-index: 100;
+  cursor: pointer;
+  background-color: #fff;
+  border: none;
+  text-transform: uppercase;
+  transition: all .3s ease;
+  font-weight: 600;
+
+  &:hover {
+    background-color: #b198b8;
+    color: #fff;
   }
 }

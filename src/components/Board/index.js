@@ -17,7 +17,7 @@ export const Board = () => {
 
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(null);
-  const onChange = (dates) => {
+  const filterByDate = (dates) => {
     const [start, end] = dates;
     setStartDate(start);
     setEndDate(end);
@@ -31,17 +31,58 @@ export const Board = () => {
     }
   };
 
+  const filterByReal = () => {};
+
   useEffect(() => {
     localStorage.setItem('boardList', JSON.stringify(boardList));
     setSmallBoardList(boardList.slice(0, MAXLIST));
-  }, [boardList]);
+  }, [boardList, MAXLIST]);
 
   return (
     <div
       className="board"
       onClick={(e) => {
+        let listItem = document.querySelectorAll('.item');
+        let wrapperButtonFilters = document.querySelector(
+          '.wrapper-buttons-filters'
+        );
+        let wrapperButtonSorts = document.querySelector(
+          '.wrapper-buttons-sorts'
+        );
+
+        if (
+          ((wrapperButtonSorts.classList.contains(
+            'wrapper-buttons-sorts--open'
+          ) ||
+            wrapperButtonFilters.classList.contains(
+              'wrapper-buttons-filters--open'
+            )) &&
+            !e.target.classList.contains('sorts') &&
+            !e.target.classList.contains('filters')) ||
+          (!e.target.closest('.sorts') && !e.target.closest('.filters'))
+        ) {
+          wrapperButtonSorts.classList.remove('wrapper-buttons-sorts--open');
+          wrapperButtonFilters.classList.remove(
+            'wrapper-buttons-filters--open'
+          );
+        }
+
         if (!e.target.closest('li')) {
-          let listItem = document.querySelectorAll('.item');
+          if (
+            (wrapperButtonSorts.classList.contains(
+              'wrapper-buttons-sorts--open'
+            ) ||
+              wrapperButtonFilters.classList.contains(
+                'wrapper-buttons-filters--open'
+              )) &&
+            !e.target.classList.contains('sorts') &&
+            !e.target.classList.contains('filters')
+          ) {
+            wrapperButtonSorts.classList.remove('wrapper-buttons-sorts--open');
+            wrapperButtonFilters.classList.remove(
+              'wrapper-buttons-filters--open'
+            );
+          }
           Array.from(listItem).map((item) => {
             if (item.classList.contains('item--change')) {
               item.classList.remove('item--change');
@@ -54,32 +95,82 @@ export const Board = () => {
       <div className="board__head">
         <h1 className="board__title">Todo by @lockdur</h1>
         <div className="board__filter">
-          <span>filter by:</span>
-          <DatePicker
-            selected={startDate}
-            onChange={onChange}
-            startDate={startDate}
-            endDate={endDate}
-            selectsRange
-            inline
-          />
+          <div className="wrapper-buttons-filters">
+            <button
+              className="button filters"
+              onClick={() => {
+                const wrapperButtonFilters = document.querySelector(
+                  '.wrapper-buttons-filters'
+                );
+                wrapperButtonFilters.classList.toggle(
+                  'wrapper-buttons-filters--open'
+                );
+              }}
+            >
+              filter
+            </button>
+            <button
+              onClick={(e) => {
+                const wrapperFilterDate =
+                  document.querySelector('.filter__by-date');
+                wrapperFilterDate.classList.toggle('filter__by-date--open');
+              }}
+              className="filter__button-by-date buttonFS"
+            >
+              date
+            </button>
+            <button
+              onClick={() => console.log('byreal')}
+              className="filter__button-by-real buttonFS"
+            >
+              {' '}
+              real
+            </button>
+          </div>
+          <div className="filter__by-date">
+            <DatePicker
+              selected={startDate}
+              onChange={filterByDate}
+              startDate={startDate}
+              endDate={endDate}
+              selectsRange
+              inline
+            />
+          </div>
         </div>
         <div className="board__sort">
-          <span>sort by:</span>
-          <button
-            onClick={() => {
-              dispatch(sortItemsUp());
-            }}
-          >
-            by date Up
-          </button>
-          <button
-            onClick={() => {
-              dispatch(sortItemsDown());
-            }}
-          >
-            by date Down
-          </button>
+          <div className="wrapper-buttons-sorts">
+            <button
+              className="button sorts"
+              onClick={() => {
+                const wrapperButtonSorts = document.querySelector(
+                  '.wrapper-buttons-sorts'
+                );
+                wrapperButtonSorts.classList.toggle(
+                  'wrapper-buttons-sorts--open'
+                );
+              }}
+            >
+              sort
+            </button>
+            <button
+              className="buttonFS sort__button-by-up"
+              onClick={() => {
+                dispatch(sortItemsUp());
+              }}
+            >
+              date Up
+            </button>
+            <button
+              className="buttonFS sort__button-by-down"
+              onClick={() => {
+                dispatch(sortItemsDown());
+              }}
+            >
+              Date Down
+            </button>
+          </div>
+          <div className="wrapper-sorts"></div>
         </div>
       </div>
       <div className="board__main">
