@@ -49,7 +49,6 @@ export const Board = () => {
         let wrapperButtonSorts = document.querySelector(
           '.wrapper-buttons-sorts'
         );
-
         if (
           ((wrapperButtonSorts.classList.contains(
             'wrapper-buttons-sorts--open'
@@ -102,9 +101,23 @@ export const Board = () => {
                 const wrapperButtonFilters = document.querySelector(
                   '.wrapper-buttons-filters'
                 );
+                const wrapperButtonSorts = document.querySelector(
+                  '.wrapper-buttons-sorts'
+                );
+
                 wrapperButtonFilters.classList.toggle(
                   'wrapper-buttons-filters--open'
                 );
+                console.log('open filters');
+                if (
+                  wrapperButtonSorts.classList.contains(
+                    'wrapper-buttons-sorts--open'
+                  )
+                ) {
+                  wrapperButtonSorts.classList.remove(
+                    'wrapper-buttons-sorts--open'
+                  );
+                }
               }}
             >
               filter
@@ -146,9 +159,21 @@ export const Board = () => {
                 const wrapperButtonSorts = document.querySelector(
                   '.wrapper-buttons-sorts'
                 );
+                const wrapperButtonFilters = document.querySelector(
+                  '.wrapper-buttons-filters'
+                );
                 wrapperButtonSorts.classList.toggle(
                   'wrapper-buttons-sorts--open'
                 );
+                if (
+                  wrapperButtonFilters.classList.contains(
+                    'wrapper-buttons-filters--open'
+                  )
+                ) {
+                  wrapperButtonFilters.classList.remove(
+                    'wrapper-buttons-filters--open'
+                  );
+                }
               }}
             >
               sort
