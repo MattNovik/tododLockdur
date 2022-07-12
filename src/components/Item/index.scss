@@ -15,6 +15,26 @@
   transition: all .3s ease;
   backface-visibility: hidden;
 
+  @media (max-width: 1023px) {
+
+    &:nth-child(2n) {
+      justify-self: end;
+    }
+  }
+
+  @media (max-width: 767px) {
+    width: 100%;
+
+    &:nth-child(2n) {
+      justify-self: start;
+    }
+
+    .item__close {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+
   &[data-classdate='true'] {
     &:before {
       background-color: red;

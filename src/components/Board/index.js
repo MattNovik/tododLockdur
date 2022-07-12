@@ -6,6 +6,7 @@ import { nanoid } from '@reduxjs/toolkit';
 import { borderSpace } from '../../store/boardList';
 import { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
+import { ReactComponent as IconAdd } from '../../img/icon-add.svg';
 
 export const Board = () => {
   const dispatch = useDispatch();
@@ -203,8 +204,18 @@ export const Board = () => {
           className="board__button"
           onClick={() => dispatch(addNewItem(nanoid()))}
         >
-          {' '}
-          Добавить новую задачу
+          <IconAdd />
+          {/*           <picture>
+            <source type="image/webp" srcSet={iconAddWebp} />
+            <img
+              src={iconAddUs}
+              srcSet={iconAdd2x}
+              width="50"
+              height="50"
+              alt="icon-add"
+            />
+          </picture> */}
+          <span> Add new task</span>
         </button>
         <ul className="board__list">
           {smallBoardList.map((item, i) => {
