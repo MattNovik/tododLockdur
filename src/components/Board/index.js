@@ -8,13 +8,37 @@ import { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import { ReactComponent as IconAdd } from '../../img/icon-add.svg';
 
+const month = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+];
+
+const weekDay = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
 export const Board = () => {
   const dispatch = useDispatch();
   let boardList = useSelector(borderSpace);
-  let MAXLIST = 9;
+  const [maxList, setMaxList] = useState(9);
   const [smallBoardList, setSmallBoardList] = useState(
-    boardList.slice(0, MAXLIST)
+    boardList.slice(0, maxList)
   );
+
+  const todayDate =
+    weekDay[new Date().getDay()] +
+    ' ' +
+    new Date().getDate() +
+    ' ' +
+    month[new Date().getMonth()];
 
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(null);
@@ -22,7 +46,7 @@ export const Board = () => {
     const [start, end] = dates;
     setStartDate(start);
     setEndDate(end);
-    setSmallBoardList(boardList.slice(0, MAXLIST));
+    setSmallBoardList(boardList.slice(0, maxList));
     if (end !== null && start !== null) {
       setSmallBoardList(
         smallBoardList.filter(
@@ -36,8 +60,8 @@ export const Board = () => {
 
   useEffect(() => {
     localStorage.setItem('boardList', JSON.stringify(boardList));
-    setSmallBoardList(boardList.slice(0, MAXLIST));
-  }, [boardList, MAXLIST]);
+    setSmallBoardList(boardList.slice(0, maxList));
+  }, [boardList, maxList]);
 
   return (
     <div
@@ -200,9 +224,15 @@ export const Board = () => {
         </div>
       </div>
       <div className="board__main">
+        <div className="board__time">
+          <span>Today</span>
+          <span>{todayDate}</span>
+        </div>
         <button
           className="board__button"
-          onClick={() => dispatch(addNewItem(nanoid()))}
+          onClick={() => {
+            dispatch(addNewItem(nanoid()));
+          }}
         >
           <IconAdd />
           {/*           <picture>
@@ -217,27 +247,35 @@ export const Board = () => {
           </picture> */}
           <span> Add new task</span>
         </button>
-        <ul className="board__list">
-          {smallBoardList.map((item, i) => {
-            return (
-              <Item
-                key={nanoid()}
-                idItem={item.idItem}
-                name={item.name}
-                description={item.description}
-                date={item.date}
-              />
-            );
-          })}
-        </ul>
+        {smallBoardList.length !== 0 ? (
+          <ul className="board__list">
+            {smallBoardList.map((item, i) => {
+              return (
+                <Item
+                  key={nanoid()}
+                  idItem={item.idItem}
+                  name={item.name}
+                  description={item.description}
+                  date={item.date}
+                  classChange={item.classChange}
+                />
+              );
+            })}
+          </ul>
+        ) : (
+          <div className="board__list-empty">
+            <p>Hi! You can add new task or goal at this page!</p>
+          </div>
+        )}
         {boardList.length > 9 && boardList.length !== smallBoardList.length ? (
           <button
+            className="board__load-more"
             onClick={() => {
-              MAXLIST += 9;
-              setSmallBoardList(boardList.slice(0, MAXLIST));
+              setMaxList(maxList + 9);
+              setSmallBoardList(boardList.slice(0, maxList));
             }}
           >
-            Add more
+            Load more
           </button>
         ) : (
           <></>

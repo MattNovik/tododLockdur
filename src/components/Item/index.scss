@@ -4,9 +4,9 @@
   justify-content: space-between;
   row-gap: 10px;
   position: relative;
-  width: 300px;
-  height: 200px;
-  padding: 20px 35px 20px 20px;
+  width: 400px;
+  height: 250px;
+  padding: 20px 35px 20px 25px;
   box-sizing: border-box;
   background-color: #fff;
   box-shadow: 0px -2px 12px 0px rgba(34, 60, 80, 0.38);
@@ -15,10 +15,45 @@
   transition: all .3s ease;
   backface-visibility: hidden;
 
+/*   &:first-child {
+    animation: fadeIn 1.8s backwards;
+  } */
+
+  &:nth-child(4n) {
+    justify-self: end;
+  }
+
+  &:nth-child(4n + 2),
+  &:nth-child(4n + 3) {
+    justify-self: center;
+  }
+
+  @media (max-width: 1919px) {
+    width: 300px;
+    height: 200px;
+  }
+
+  @media (max-width: 1439px) {
+    &:nth-child(3n) {
+      justify-self: end;
+    }
+  
+    &:nth-child(3n + 2) {
+      justify-self: center;
+    }
+  }
+
+
+
   @media (max-width: 1023px) {
 
     &:nth-child(2n) {
       justify-self: end;
+    }
+
+    .item__close {
+      visibility: visible;
+      opacity: 1;
     }
   }
 
@@ -27,11 +62,6 @@
 
     &:nth-child(2n) {
       justify-self: start;
-    }
-
-    .item__close {
-      visibility: visible;
-      opacity: 1;
     }
   }
 
@@ -46,7 +76,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 5px;
+    width: 10px;
     height: 100%;
     background-color: green;
     border-radius: 10px 0 0 10px;

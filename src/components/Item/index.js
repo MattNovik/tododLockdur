@@ -7,18 +7,18 @@ import DatePicker from 'react-datepicker';
 import { forwardRef, useState } from 'react';
 
 const month = [
-  'янв',
-  'фев',
-  'мар',
-  'апр',
-  'май',
-  'июн',
-  'июл',
-  'авг',
-  'сен',
-  'окт',
-  'ноя',
-  'дек',
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
 ];
 
 const CustomInput = forwardRef(({ value, onClick }, ref) => (
@@ -27,7 +27,7 @@ const CustomInput = forwardRef(({ value, onClick }, ref) => (
   </button>
 ));
 
-export const Item = ({ idItem, name, description, date }) => {
+export const Item = ({ idItem, name, description, date, classChange }) => {
   const dispatch = useDispatch();
   const dateObj = new Date(date);
   const coverDate =
@@ -36,12 +36,12 @@ export const Item = ({ idItem, name, description, date }) => {
     month[dateObj.getMonth()] +
     ' ' +
     dateObj.getFullYear();
-  const [pickerDate, setPickerDate] = useState(new Date(date));
+  const [pickerDate, setPickerDate] = useState(new Date(date).getTime());
   const [classDate] = useState(new Date().getTime() > date ? true : false);
 
   return (
     <li
-      className="item"
+      className={classChange ? 'item' + ' ' + classChange : 'item'}
       data-classdate={classDate}
       id={idItem}
       onClick={(e) => {
@@ -70,7 +70,7 @@ export const Item = ({ idItem, name, description, date }) => {
         }}
       />
       <TextField
-        label="Название цели"
+        label="Goal name"
         placeholder={name}
         className="item__name-input"
         sx={{
@@ -111,6 +111,7 @@ export const Item = ({ idItem, name, description, date }) => {
                 .closest('li')
                 .querySelector('.item__description-input').value,
               date: pickerDate,
+              classChange: '',
             };
             dispatch(saveItem(data));
             e.target.closest('li').classList.remove('item--change');

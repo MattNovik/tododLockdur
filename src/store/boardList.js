@@ -26,11 +26,15 @@ export const boardSlice = createSlice({
   reducers: {
     addNewItem: (state, action) => {
       let date = new Date().getTime();
+      state.map((item, i) => {
+        item.classChange = '';
+      });
       state.unshift({
         idItem: action.payload,
-        name: 'Введите название цели',
+        name: 'Enter your goal',
         date: date,
-        description: 'Введите описание цели',
+        description: 'Goal description',
+        classChange: 'item--change',
       });
     },
     removeItem: (state, action) => {
@@ -55,6 +59,7 @@ export const boardSlice = createSlice({
       let name = action.payload.name;
       let description = action.payload.description;
       let date = action.payload.date;
+      let classChange = action.payload.classChange;
       state.map((item, i) => {
         if (item.idItem === id) {
           if (name) {
@@ -64,6 +69,7 @@ export const boardSlice = createSlice({
             item.description = description;
           }
           item.date = date;
+          item.classChange = classChange;
         }
       });
     },
