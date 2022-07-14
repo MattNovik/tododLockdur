@@ -5,7 +5,7 @@
   row-gap: 10px;
   position: relative;
   width: 400px;
-  height: 250px;
+  height: 200px;
   padding: 20px 35px 20px 25px;
   box-sizing: border-box;
   background-color: #fff;
@@ -15,9 +15,9 @@
   transition: all .3s ease;
   backface-visibility: hidden;
 
-/*   &:first-child {
-    animation: fadeIn 1.8s backwards;
-  } */
+  &--new {
+    animation: fadeIn .8s backwards;
+  }
 
   &:nth-child(4n) {
     justify-self: end;
@@ -34,6 +34,15 @@
   }
 
   @media (max-width: 1439px) {
+    &:nth-child(4n) {
+      justify-self: start;
+    }
+
+    &:nth-child(4n + 3) {
+      justify-self: start;
+    }
+  
+
     &:nth-child(3n) {
       justify-self: end;
     }
@@ -47,10 +56,17 @@
 
   @media (max-width: 1023px) {
 
+    &:nth-child(3n) {
+      justify-self: start;
+    }
+
+    &:nth-child(1n) {
+      justify-self: start;
+    }
+
     &:nth-child(2n) {
       justify-self: end;
     }
-
     .item__close {
       visibility: visible;
       opacity: 1;

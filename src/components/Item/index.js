@@ -41,7 +41,7 @@ export const Item = ({ idItem, name, description, date, classChange }) => {
 
   return (
     <li
-      className={classChange ? 'item' + ' ' + classChange : 'item'}
+      className={classChange ? 'item ' + classChange : 'item'}
       data-classdate={classDate}
       id={idItem}
       onClick={(e) => {
@@ -53,6 +53,7 @@ export const Item = ({ idItem, name, description, date, classChange }) => {
           let listItem = document.querySelectorAll('.item');
           Array.from(listItem).map((item) => {
             item.classList.remove('item--change');
+            item.classList.remove('item--new');
           });
           e.target.closest('li').classList.add('item--change');
           dispatch(changeItem());
@@ -70,16 +71,24 @@ export const Item = ({ idItem, name, description, date, classChange }) => {
         }}
       />
       <TextField
-        label="Goal name"
+        //label="Enter your goal"
         placeholder={name}
         className="item__name-input"
         sx={{
-          //padding: '5px',
           '& .MuiInputBase-input': {
-            padding: '8px',
+            padding: '8px 14px',
           },
           '& .MuiInputLabel-root': {
             transform: 'translate(14px, 8px) scale(1)',
+          },
+          '& label.Mui-focused': {
+            display: 'none',
+          },
+          '& .Mui-focused legend': {
+            display: 'none',
+          },
+          '& .Mui-focused fieldset': {
+            top: '0',
           },
         }}
       />
@@ -115,6 +124,7 @@ export const Item = ({ idItem, name, description, date, classChange }) => {
             };
             dispatch(saveItem(data));
             e.target.closest('li').classList.remove('item--change');
+            e.target.closest('li').classList.remove('item-new');
           }}
         >
           ОК

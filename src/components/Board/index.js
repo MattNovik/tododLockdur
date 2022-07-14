@@ -28,7 +28,7 @@ const weekDay = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 export const Board = () => {
   const dispatch = useDispatch();
   let boardList = useSelector(borderSpace);
-  const [maxList, setMaxList] = useState(9);
+  const [maxList, setMaxList] = useState(12);
   const [smallBoardList, setSmallBoardList] = useState(
     boardList.slice(0, maxList)
   );
@@ -108,8 +108,12 @@ export const Board = () => {
             );
           }
           Array.from(listItem).map((item) => {
-            if (item.classList.contains('item--change')) {
+            if (
+              item.classList.contains('item--change') ||
+              item.classList.contains('item--new')
+            ) {
               item.classList.remove('item--change');
+              item.classList.remove('item--new');
             }
           });
         }
@@ -267,15 +271,25 @@ export const Board = () => {
             <p>Hi! You can add new task or goal at this page!</p>
           </div>
         )}
-        {boardList.length > 9 && boardList.length !== smallBoardList.length ? (
+        {boardList.length > 12 && boardList.length !== smallBoardList.length ? (
           <button
             className="board__load-more"
             onClick={() => {
-              setMaxList(maxList + 9);
+              let listItem = document.querySelectorAll('.item');
+              Array.from(listItem).map((item) => {
+                if (
+                  item.classList.contains('item--change') ||
+                  item.classList.contains('item--new')
+                ) {
+                  item.classList.remove('item--change');
+                  item.classList.remove('item--new');
+                }
+              });
+              setMaxList(maxList + 12);
               setSmallBoardList(boardList.slice(0, maxList));
             }}
           >
-            Load more
+            Show more
           </button>
         ) : (
           <></>

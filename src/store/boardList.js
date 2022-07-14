@@ -34,11 +34,14 @@ export const boardSlice = createSlice({
         name: 'Enter your goal',
         date: date,
         description: 'Goal description',
-        classChange: 'item--change',
+        classChange: 'item--change item--new',
       });
     },
     removeItem: (state, action) => {
       let newId = action.payload.id;
+      state.map((item, i) => {
+        item.classChange = '';
+      });
       if (action.payload.target === 'svg' || action.payload.target === 'path') {
         state.map((item, i) => {
           if (item.idItem === newId) {
