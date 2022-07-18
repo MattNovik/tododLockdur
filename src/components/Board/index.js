@@ -27,7 +27,7 @@ const weekDay = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 export const Board = () => {
   const dispatch = useDispatch();
-  let boardList = useSelector(borderSpace);
+  const boardList = useSelector(borderSpace);
   const [maxList, setMaxList] = useState(12);
   const [smallBoardList, setSmallBoardList] = useState(
     boardList.slice(0, maxList)
@@ -40,14 +40,15 @@ export const Board = () => {
     ' ' +
     month[new Date().getMonth()];
 
-  const [startDate, setStartDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+
   const filterByDate = (dates) => {
     const [start, end] = dates;
     setStartDate(start);
     setEndDate(end);
     setSmallBoardList(boardList.slice(0, maxList));
-    if (end !== null && start !== null) {
+    if (start !== null && end !== null) {
       setSmallBoardList(
         smallBoardList.filter(
           (item) => item.date >= start.getTime() && item.date <= end.getTime()
@@ -61,19 +62,31 @@ export const Board = () => {
   useEffect(() => {
     localStorage.setItem('boardList', JSON.stringify(boardList));
     setSmallBoardList(boardList.slice(0, maxList));
+    if (startDate !== null && setEndDate !== null) {
+      setSmallBoardList(
+        smallBoardList.filter(
+          (item) => item.date >= startDate.getTime() && item.date <= endDate.getTime()
+        )
+      );
+    }
   }, [boardList, maxList]);
 
   return (
     <div
       className="board"
       onClick={(e) => {
-        let listItem = document.querySelectorAll('.item');
-        let wrapperButtonFilters = document.querySelector(
+        const listItem = document.querySelectorAll('.item');
+        const wrapperButtonFilters = document.querySelector(
           '.wrapper-buttons-filters'
         );
-        let wrapperButtonSorts = document.querySelector(
+        const wrapperButtonSorts = document.querySelector(
           '.wrapper-buttons-sorts'
         );
+        const wrapperFilterDate =
+                  document.querySelector('.filter__by-date');
+        if (!e.target.closest('.filter__by-date') && wrapperFilterDate.classList.contains('filter__by-date--open') && !e.target.classList.contains('filter__button-by-date')) {
+          wrapperFilterDate.classList.remove('filter__by-date--open');
+        } // убираю окно фильтра даты при клике не на фильтр
         if (
           ((wrapperButtonSorts.classList.contains(
             'wrapper-buttons-sorts--open'
@@ -89,7 +102,7 @@ export const Board = () => {
           wrapperButtonFilters.classList.remove(
             'wrapper-buttons-filters--open'
           );
-        }
+        } // убираю фокус с фильтра и сортировки 
 
         if (!e.target.closest('li')) {
           if (
@@ -116,7 +129,7 @@ export const Board = () => {
               item.classList.remove('item--new');
             }
           });
-        }
+        } // убираю фокус с задачи
       }}
     >
       <div className="overlay-wrapper" onClick={() => {}}></div>
@@ -167,6 +180,16 @@ export const Board = () => {
             >
               {' '}
               real
+            </button>
+            <button
+              onClick={() => {
+                setStartDate(null);
+                setEndDate(null);
+                setSmallBoardList(boardList.slice(0, maxList))}}
+              className="filter__button-by-usual buttonFS"
+            >
+              {' '}
+              usual
             </button>
           </div>
           <div className="filter__by-date">
@@ -223,6 +246,14 @@ export const Board = () => {
             >
               Date Down
             </button>
+            <button
+              className="buttonFS sort__button-by-usual"
+              onClick={() => {
+                setSmallBoardList(boardList.slice(0, maxList));;
+              }}
+            >
+              usual
+            </button>
           </div>
           <div className="wrapper-sorts"></div>
         </div>
@@ -235,7 +266,7 @@ export const Board = () => {
         <button
           className="board__button"
           onClick={() => {
-            dispatch(addNewItem(nanoid()));
+            dispatch(addNewItem(nanoid()))
           }}
         >
           <IconAdd />
@@ -275,7 +306,7 @@ export const Board = () => {
           <button
             className="board__load-more"
             onClick={() => {
-              let listItem = document.querySelectorAll('.item');
+              const listItem = document.querySelectorAll('.item');
               Array.from(listItem).map((item) => {
                 if (
                   item.classList.contains('item--change') ||

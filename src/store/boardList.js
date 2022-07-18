@@ -31,9 +31,9 @@ export const boardSlice = createSlice({
       });
       state.unshift({
         idItem: action.payload,
-        name: 'Enter your goal',
+        name: "Todo's name",
         date: date,
-        description: 'Goal description',
+        description: "Todo's description",
         classChange: 'item--change item--new',
       });
     },

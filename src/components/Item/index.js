@@ -56,6 +56,10 @@ export const Item = ({ idItem, name, description, date, classChange }) => {
             item.classList.remove('item--new');
           });
           e.target.closest('li').classList.add('item--change');
+          e.target.closest('li').querySelector('input').value = name;
+          e.target
+            .closest('li')
+            .querySelector('.item__description-input').value = description;
           dispatch(changeItem());
         }
       }}
@@ -76,7 +80,14 @@ export const Item = ({ idItem, name, description, date, classChange }) => {
         className="item__name-input"
         sx={{
           '& .MuiInputBase-input': {
-            padding: '8px 14px',
+            padding: '8px',
+          },
+          '& .MuiOutlinedInput-root:hover fieldset': {
+            borderColor: '#1976d2',
+          },
+          '& .MuiOutlinedInput-root fieldset': {
+            borderWidth: '2px',
+            transition: 'border-color .3s ease',
           },
           '& .MuiInputLabel-root': {
             transform: 'translate(14px, 8px) scale(1)',
@@ -104,11 +115,13 @@ export const Item = ({ idItem, name, description, date, classChange }) => {
         <span className="item__date-visual">{coverDate}</span>
         <DatePicker
           selected={pickerDate}
+          //showTimeSelect
           onChange={(date) => {
             setPickerDate(date.getTime());
           }}
           className="item__date"
           customInput={<CustomInput />}
+          dateFormat="MMM d, yyyy"
         />
         <button
           className="item__save-button"

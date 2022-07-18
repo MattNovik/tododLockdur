@@ -186,6 +186,15 @@
 
 .filter__by-date {
   display: none;
+
+  &--open {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 100%;
+    transform: translate(0, 0);
+    z-index: 110;
+  }
 }
 
 .wrapper-filters {
@@ -232,7 +241,8 @@
     }
 
     .filter__button-by-date,
-    .filter__button-by-real {
+    .filter__button-by-real,
+    .filter__button-by-usual {
       display: block;
     }
 
@@ -246,17 +256,22 @@
       top: 200%;
       border-top: solid 1px #000;
     }
+
+    .filter__button-by-usual {
+      top: 300%;
+      border-top: solid 1px #000;
+    }
   }
 }
 
-.wrapper-buttons-filter--open + .filter__by-date--open {
+/* .wrapper-buttons-filter--open + .filter__by-date--open {
   display: block;
   position: absolute;
   top: 0;
   left: 100%;
   transform: translate(0, 0);
   z-index: 110;
-}
+} */
 
 .wrapper-buttons-sorts {
   position: relative;
@@ -268,7 +283,8 @@
     }
 
     .sort__button-by-up,
-    .sort__button-by-down {
+    .sort__button-by-down,
+    .sort__button-by-usual {
       display: block;
     }
 
@@ -280,6 +296,11 @@
 
     .sort__button-by-down {
       top: 200%;
+      border-top: solid 1px #000;
+    }
+
+    .sort__button-by-usual {
+      top: 300%;
       border-top: solid 1px #000;
     }
   }  
