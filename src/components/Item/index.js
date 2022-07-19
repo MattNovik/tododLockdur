@@ -1,10 +1,10 @@
-import './index.scss';
-import { TextareaAutosize, TextField } from '@mui/material';
-import { Close } from '@mui/icons-material';
-import { useDispatch } from 'react-redux';
-import { removeItem, changeItem, saveItem } from '../../store/boardList';
-import DatePicker from 'react-datepicker';
-import { forwardRef, useState } from 'react';
+import './index.scss'
+import { TextareaAutosize, TextField } from '@mui/material'
+import { Close } from '@mui/icons-material'
+import { useDispatch } from 'react-redux'
+import { removeItem, changeItem, saveItem } from '../../store/boardList'
+import DatePicker from 'react-datepicker'
+import { forwardRef, useState } from 'react'
 
 const month = [
   'Jan',
@@ -19,25 +19,25 @@ const month = [
   'Oct',
   'Nov',
   'Dec',
-];
+]
 
 const CustomInput = forwardRef(({ value, onClick }, ref) => (
   <button className="custom-input" onClick={onClick} ref={ref}>
     {value}
   </button>
-));
+))
 
 export const Item = ({ idItem, name, description, date, classChange }) => {
-  const dispatch = useDispatch();
-  const dateObj = new Date(date);
+  const dispatch = useDispatch()
+  const dateObj = new Date(date)
   const coverDate =
     dateObj.getDate() +
     ' ' +
     month[dateObj.getMonth()] +
     ' ' +
-    dateObj.getFullYear();
-  const [pickerDate, setPickerDate] = useState(new Date(date).getTime());
-  const [classDate] = useState(new Date().getTime() > date ? true : false);
+    dateObj.getFullYear()
+  const [pickerDate, setPickerDate] = useState(new Date(date).getTime())
+  const [classDate] = useState(new Date().getTime() > date ? true : false)
 
   return (
     <li
@@ -50,19 +50,36 @@ export const Item = ({ idItem, name, description, date, classChange }) => {
           e.target.tagName !== 'svg' &&
           e.target.tagName !== 'path'
         ) {
-          let listItem = document.querySelectorAll('.item');
+          let listItem = document.querySelectorAll('.item')
           Array.from(listItem).map((item) => {
-            item.classList.remove('item--change');
-            item.classList.remove('item--new');
-          });
-          e.target.closest('li').classList.add('item--change');
-          e.target.closest('li').querySelector('input').value = name;
+            item.classList.remove('item--change')
+            item.classList.remove('item--new')
+          })
+          e.target.closest('li').classList.add('item--change')
+          e.target.closest('li').querySelector('input').value = name
           e.target
             .closest('li')
-            .querySelector('.item__description-input').value = description;
-          dispatch(changeItem());
+            .querySelector('.item__description-input').value = description
+          dispatch(changeItem())
         }
       }}
+      /*       onKeyPress={(e) => {
+        console.log('q')
+                if (e.keyCode === 13) {
+          let data = {
+            id: e.target.closest('li').id,
+            name: e.target.closest('li').querySelector('input').value,
+            description: e.target
+              .closest('li')
+              .querySelector('.item__description-input').value,
+            date: pickerDate,
+            classChange: '',
+          }
+          dispatch(saveItem(data))
+          e.target.closest('li').classList.remove('item--change')
+          e.target.closest('li').classList.remove('item-new')
+        }
+      }} */
     >
       <Close
         className="item__close"
@@ -70,8 +87,8 @@ export const Item = ({ idItem, name, description, date, classChange }) => {
           let data = {
             id: e.target.closest('li').id,
             target: e.target.tagName,
-          };
-          dispatch(removeItem(data));
+          }
+          dispatch(removeItem(data))
         }}
       />
       <TextField
@@ -117,7 +134,7 @@ export const Item = ({ idItem, name, description, date, classChange }) => {
           selected={pickerDate}
           //showTimeSelect
           onChange={(date) => {
-            setPickerDate(date.getTime());
+            setPickerDate(date.getTime())
           }}
           className="item__date"
           customInput={<CustomInput />}
@@ -134,15 +151,15 @@ export const Item = ({ idItem, name, description, date, classChange }) => {
                 .querySelector('.item__description-input').value,
               date: pickerDate,
               classChange: '',
-            };
-            dispatch(saveItem(data));
-            e.target.closest('li').classList.remove('item--change');
-            e.target.closest('li').classList.remove('item-new');
+            }
+            dispatch(saveItem(data))
+            e.target.closest('li').classList.remove('item--change')
+            e.target.closest('li').classList.remove('item-new')
           }}
         >
           ОК
         </button>
       </div>
     </li>
-  );
-};
+  )
+}
